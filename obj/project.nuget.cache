@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qa7H6Akt3TEbQUy03I0DUjtpLtb1C3ufy9X3FEM5MwBO/5OkT1AbBTmby9kr5t6YgnFF6NYaj+5nmC2mkecsPg==",
+  "dgSpecHash": "+UOkitaFA0fdipJUXUmh4f9hBeyXD5U5n7rybuP8ui3He7P3fiVPKffpx85+LR0qHD6ungBfEaATtj1KH10SCQ==",
   "success": true,
-  "projectFilePath": "D:\\LaserSoft\\TestProject\\TestProject\\TestProject.csproj",
+  "projectFilePath": "D:\\WORKSPACE\\personal\\Lasersoft\\testproject\\TestProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Zeta\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Zeta\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\5.0.1\\microsoft.aspnetcore.diagnostics.entityframeworkcore.5.0.1.nupkg.sha512",

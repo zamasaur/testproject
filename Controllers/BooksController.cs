@@ -97,27 +97,31 @@ namespace TestProject.Controllers
         }
 
         // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? authorId)
         {
-            if (id == null)
+            if (id == null || authorId == null)
             {
                 return NotFound();
             }
 
             var book = await _context.Books.FindAsync(id);
-            if (book == null)
+            var author = await _context.Authors.FindAsync(authorId);
+            if (book == null || author == null || !_context.Compositions.Any(c => c.AuthorID == authorId && c.BookID == id))
             {
                 return NotFound();
             }
-            return View(book);
+
+            var detailModelView = new DetailViewModel { Book = book , Author = author};
+            return View(detailModelView);
+            /*return View(book);*/
         }
 
         // POST: Books/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookID,Title,Isbn,Summary")] Book book)
+        /*[ValidateAntiForgeryToken]*/
+        public async Task<IActionResult> Edit(int id, int authorId, [Bind("BookID,Title,Isbn,Summary")] Book book)
         {
             if (id != book.BookID)
             {
@@ -142,9 +146,15 @@ namespace TestProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            //return View(book);
+            return RedirectToRoute(new
+            {
+                controller = "Authors",
+                action = "Details",
+                id = authorId
+            });
         }
 
         // GET: Books/Delete/5
