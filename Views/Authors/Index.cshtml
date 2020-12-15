@@ -37,35 +37,49 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FiscalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nation)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AuthorID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AuthorID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AuthorID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FiscalCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nation)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AuthorID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.AuthorID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AuthorID">Delete</a>
+                    <form asp-action="Delete" asp-route-id="@item.AuthorID" data-ajax="true" data-ajax-success="deleteItem(this)">
+                        <button type="submit" class="btn btn-sm btn-danger d-none d-md-inline-block">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section scripts {
+    <script>
+        function deleteItem(form) {
+            $(form).parents('tr').remove();
+        }
+    </script>
+}

@@ -148,7 +148,8 @@ namespace TestProject.Controllers
             var author = await _context.Authors.FindAsync(id);
             _context.Authors.Remove(author);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            /*return RedirectToAction(nameof(Index));*/
+            return NoContent();
         }
 
         private bool AuthorExists(int id)
