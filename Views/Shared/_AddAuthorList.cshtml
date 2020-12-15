@@ -1,41 +1,5 @@
 ﻿@model TestProject.ViewModels.ViewModel
 
-@{
-    ViewData["Title"] = "Book Details";
-}
-
-<h1>Book Details</h1>
-
-<div>
-    <h4>Book</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Book.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Book.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Book.Isbn)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Book.Isbn)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Book.Summary)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Book.Summary)
-        </dd>
-    </dl>
-</div>
-
-<h4>Author List</h4>
-
-<p>
-    <a asp-action="AddAuthor" asp-route-id="@Model.BookID">Add author</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -88,16 +52,16 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Nation)
                 </td>
-                <td>   
-                    @if (Model.Authors.ToList().Count > 1) { 
-                    <a asp-action="Remove" asp-route-id="@item.AuthorID">Remove</a>
-                    }
+                <td>
+                    <form asp-action="AddAuthor" asp-route-id="@Model.Book.BookID" data-ajax="true" data-ajax-update="#AddAuthorList" style="display: inline;">
+                        <input type="hidden" asp-for="@item.AuthorID" name="authorId" />
+                        <!-- Modal trigger -->
+                        <button type="button" class="btn btn-sm btn-warning d-none d-md-inline-block" data-toggle="modal" data-target="#confirmationModal">
+                            Add
+                        </button>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-<div>
-    <a asp-action="Index">Back</a>
-</div>

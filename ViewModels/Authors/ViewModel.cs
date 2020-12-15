@@ -6,7 +6,7 @@ using TestProject.Models;
 
 namespace TestProject.ViewModels
 {
-    public class DetailViewModel
+    public class ViewModel
     {
         public int AuthorID { get; set; }
         public int BookID { get; set; }

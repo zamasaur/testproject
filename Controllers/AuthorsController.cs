@@ -44,7 +44,7 @@ namespace TestProject.Controllers
             var bookByAuthor = await _context.Books
                 .Where(b => b.Composition.Any(c => c.AuthorID == id)).ToListAsync();
 
-            var detailModelView = new DetailViewModel { Author = author, Books = bookByAuthor };
+            var detailModelView = new ViewModel { Author = author, Books = bookByAuthor };
 
             return View(detailModelView);
         }

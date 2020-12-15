@@ -52,10 +52,10 @@ namespace TestProject.Controllers
 
             var authorByBook = await _context.Authors
                 .Where(a => a.Composition.Any(c => c.BookID == id)).ToListAsync();
+            
+            var modelView = new ViewModel { BookID = book.BookID, Book = book, Authors = authorByBook };
 
-            var detailModelView = new DetailViewModel { Book = book, Authors = authorByBook };
-
-            return View(detailModelView);
+            return View(modelView);
         }
 
         // GET: Books/Create/5
@@ -67,7 +67,7 @@ namespace TestProject.Controllers
             {
                 return NotFound();
             }
-            var detailModelView = new DetailViewModel { Author = author };
+            var detailModelView = new ViewModel { Author = author };
             return View(detailModelView);
         }
 
@@ -111,7 +111,7 @@ namespace TestProject.Controllers
                 return NotFound();
             }
 
-            var detailModelView = new DetailViewModel { Book = book , Author = author};
+            var detailModelView = new ViewModel { Book = book , Author = author};
             return View(detailModelView);
             /*return View(book);*/
         }
@@ -120,7 +120,7 @@ namespace TestProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        /*[ValidateAntiForgeryToken]*/
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, int authorId, [Bind("BookID,Title,Isbn,Summary")] Book book)
         {
             if (id != book.BookID)
@@ -190,5 +190,48 @@ namespace TestProject.Controllers
         {
             return _context.Books.Any(e => e.BookID == id);
         }
+
+        // GET: Books/AddAuthor
+        public async Task<IActionResult> AddAuthor(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var book = await _context.Books
+                .FirstOrDefaultAsync(m => m.BookID == id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            var authors = await _context.Authors
+                .Where(a => !a.Composition.Any(c => c.BookID == id)).ToListAsync();
+
+            /*var authors = await _context.Authors.ToListAsync();*/
+            var detailModelView = new ViewModel { BookID = book.BookID, Book = book, Authors = authors };
+
+            return View(detailModelView);
+        }
+
+        // POST: Books/AddAuthor/{BookID}?authorId={AuthorID}
+        [HttpPost, ActionName("AddAuthor")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAuthorConfirmed(int id, int authorId)
+        {
+            var book = await _context.Books.FindAsync(id);
+            var author = await _context.Authors.FindAsync(authorId);
+
+            var composition = _context.Compositions.Add(new Composition { AuthorID = authorId, BookID = id });
+            await _context.SaveChangesAsync();
+
+            var notAuthors = await _context.Authors
+                .Where(a => !a.Composition.Any(c => c.BookID == id)).ToListAsync();
+
+            var modelView = new ViewModel { BookID = book.BookID, Book = book, Authors = notAuthors };
+            return PartialView("_AddAuthorList", modelView);
+        }
+
     }
 }
