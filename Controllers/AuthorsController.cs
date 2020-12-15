@@ -145,9 +145,10 @@ namespace TestProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
+            //UNCOMMENT ME
+            /*var author = await _context.Authors.FindAsync(id);
             _context.Authors.Remove(author);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();*/
             /*return RedirectToAction(nameof(Index));*/
             return NoContent();
         }
