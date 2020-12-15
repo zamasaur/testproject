@@ -123,7 +123,7 @@ namespace TestProject.Controllers
         }
 
         // GET: Authors/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        /*public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -138,7 +138,7 @@ namespace TestProject.Controllers
             }
 
             return View(author);
-        }
+        }*/
 
         // POST: Authors/Delete/5
         [HttpPost, ActionName("Delete")]

@@ -34,7 +34,7 @@
 <h4>Author List</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="AddAuthor">Add author</a>
 </p>
 <table class="table">
     <thead>
@@ -88,10 +88,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Nation)
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.AuthorID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.AuthorID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.AuthorID">Delete</a>
+                <td>   
+                    @if (Model.Authors.ToList().Count > 1) { 
+                    <a asp-action="Remove" asp-route-id="@item.AuthorID">Remove</a>
+                    }
                 </td>
             </tr>
         }
@@ -99,6 +99,5 @@
 </table>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Book.BookID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back</a>
 </div>

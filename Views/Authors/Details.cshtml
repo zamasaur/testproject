@@ -89,8 +89,8 @@
                     @Html.DisplayFor(modelItem => item.Summary)
                 </td>
                 <td>
-                    <a asp-controller="Books" asp-action="Edit" asp-route-id="@item.BookID" asp-route-authorId="@Model.Author.AuthorID">Edit</a> |
                     <a asp-controller="Books" asp-action="Details" asp-route-id="@item.BookID">Details</a> |
+                    <a asp-controller="Books" asp-action="Edit" asp-route-id="@item.BookID" asp-route-authorId="@Model.Author.AuthorID">Edit</a> |
                     <a asp-controller="Books" asp-action="Delete" asp-route-id="@item.BookID">Delete</a>
                 </td>
             </tr>
@@ -99,6 +99,5 @@
 </table>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Author.AuthorID">Edit Author</a> |
-    <a asp-controller="Authors" asp-action="Index">Back to Authors List</a>
+    <a asp-controller="Authors" asp-action="Index">Back</a>
 </div>

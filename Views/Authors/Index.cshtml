@@ -4,10 +4,10 @@
     ViewData["Title"] = "Authors";
 }
 
-<h1>Index</h1>
+<h1>Authors Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Author</a>
 </p>
 <table class="table">
     <thead>
@@ -62,10 +62,9 @@
                     @Html.DisplayFor(modelItem => item.Nation)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.AuthorID">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.AuthorID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.AuthorID">Delete</a>
-                    <form asp-action="Delete" asp-route-id="@item.AuthorID" data-ajax="true" data-ajax-success="deleteItem(this)">
+                    <a asp-action="Edit" asp-route-id="@item.AuthorID">Edit</a> |
+                    <form asp-action="Delete" asp-route-id="@item.AuthorID" data-ajax="true" data-ajax-success="deleteItem(this)" style="display: inline;">
                         <button type="submit" class="btn btn-sm btn-danger d-none d-md-inline-block">
                             Delete
                         </button>
