@@ -122,35 +122,15 @@ namespace TestProject.Controllers
             return View(author);
         }
 
-        // GET: Authors/Delete/5
-        /*public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var author = await _context.Authors
-                .FirstOrDefaultAsync(m => m.AuthorID == id);
-            if (author == null)
-            {
-                return NotFound();
-            }
-
-            return View(author);
-        }*/
-
         // POST: Authors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //UNCOMMENT ME
-            /*var author = await _context.Authors.FindAsync(id);
+            var author = await _context.Authors.FindAsync(id);
             _context.Authors.Remove(author);
-            await _context.SaveChangesAsync();*/
-            /*return RedirectToAction(nameof(Index));*/
-            return NoContent();
+            await _context.SaveChangesAsync();
+            return PartialView("_AuthorList", await _context.Authors.ToListAsync());
         }
 
         private bool AuthorExists(int id)

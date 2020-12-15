@@ -6,76 +6,15 @@
 
 <h1>Authors Index</h1>
 
+
+
 <p>
     <a asp-action="Create">Create New Author</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Surname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BirthDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FiscalCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Surname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BirthDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FiscalCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nation)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.AuthorID">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@item.AuthorID">Edit</a> |
-                    
-                    <form asp-action="Delete" asp-route-id="@item.AuthorID" data-ajax="true" data-ajax-success="deleteItem(this)" style="display: inline;">
-                        <!-- Modal trigger -->
-                        <button type="button" class="btn btn-sm btn-danger d-none d-md-inline-block" data-toggle="modal" data-target="#confirmationModal">
-                            Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<div id="AuthorList">
+    <partial name="_AuthorList" model="Model" />
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
@@ -109,9 +48,5 @@
                 $('#confirmYes').off();
             });
         });
-
-        function deleteItem(form) {
-            $(form).parents('tr').remove();
-        }
     </script>
 }

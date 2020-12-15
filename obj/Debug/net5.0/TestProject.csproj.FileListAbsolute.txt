@@ -350,3 +350,4 @@ D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\TestProject.dll
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\ref\TestProject.dll
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\TestProject.pdb
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\TestProject.genruntimeconfig.cache
+D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Shared\_AuthorList.cshtml.g.cs
