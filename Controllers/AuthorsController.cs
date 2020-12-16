@@ -147,6 +147,8 @@ namespace TestProject.Controllers
             return PartialView("_AuthorList", viewModel);
         }
 
+        // POST: /api/Authors?surname={surname}&name={name}
+
         private bool AuthorExists(int id)
         {
             return _context.Authors.Any(e => e.AuthorID == id);
