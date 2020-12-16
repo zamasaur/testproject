@@ -36,7 +36,7 @@ namespace TestProject.Controllers
         }
 
         // GET: Books/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? authorId)
         {
             if (id == null)
             {
@@ -52,8 +52,10 @@ namespace TestProject.Controllers
 
             var authorByBook = await _context.Authors
                 .Where(a => a.Composition.Any(c => c.BookID == id)).ToListAsync();
-            
-            var modelView = new ViewModel { BookID = book.BookID, Book = book, Authors = authorByBook };
+
+            //var author = await _context.Authors.FindAsync(authorId);
+
+            var modelView = new ViewModel { BookID = book.BookID, Book = book, AuthorID = (int)authorId, Authors = authorByBook };
 
             return View(modelView);
         }
@@ -231,6 +233,24 @@ namespace TestProject.Controllers
 
             var modelView = new ViewModel { BookID = book.BookID, Book = book, Authors = notAuthors };
             return PartialView("_AddAuthorList", modelView);
+        }
+
+        // POST: Books/AddAuthor/{BookID}?authorId={AuthorID}
+        [HttpPost, ActionName("RemoveAuthor")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveAuthorConfirmed(int id, int authorId)
+        {
+            var book = await _context.Books.FindAsync(id);
+            var author = await _context.Authors.FindAsync(authorId);
+
+            var composition = _context.Compositions.Remove(new Composition { AuthorID = authorId, BookID = id });
+            await _context.SaveChangesAsync();
+
+            var notAuthors = await _context.Authors
+                .Where(a => a.Composition.Any(c => c.BookID == id)).ToListAsync();
+
+            var modelView = new ViewModel { BookID = book.BookID, Book = book, Authors = notAuthors };
+            return PartialView("_RemoveAuthorList", modelView);
         }
 
     }

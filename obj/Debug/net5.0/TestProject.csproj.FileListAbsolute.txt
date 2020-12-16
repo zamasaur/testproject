@@ -353,3 +353,4 @@ D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\TestProject.genrunt
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Shared\_AuthorList.cshtml.g.cs
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Books\AddAuthor.cshtml.g.cs
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Shared\_AddAuthorList.cshtml.g.cs
+D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Shared\_RemoveAuthorList.cshtml.g.cs

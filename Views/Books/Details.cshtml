@@ -36,68 +36,45 @@
 <p>
     <a asp-action="AddAuthor" asp-route-id="@Model.BookID">Add author</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Author.Surname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author.BirthDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author.FiscalCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author.Nation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Authors)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Surname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BirthDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FiscalCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nation)
-                </td>
-                <td>   
-                    @if (Model.Authors.ToList().Count > 1) { 
-                    <a asp-action="Remove" asp-route-id="@item.AuthorID">Remove</a>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
-<div>
-    <a asp-action="Index">Back</a>
+<div id="RemoveAuthorList">
+    <partial name="_RemoveAuthorList" model="Model" />
 </div>
+
+<a asp-controller="Authors" asp-action="Details" asp-route-id="@Model.AuthorID">Back</a>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Alert</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to add this author?
+            </div>
+            <div class="modal-footer">
+                <button id="confirmYes" type="button" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                <button id="confirmNo" type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $('#confirmationModal').on('shown.bs.modal', (event) => {
+            var modalTrigger = $(event.relatedTarget);
+            var form = modalTrigger.parent();
+
+            $('#confirmYes').on('click', () => {
+                form.submit();
+                console.log(form);
+                $('#confirmYes').off();
+            });
+        });
+    </script>
+}
