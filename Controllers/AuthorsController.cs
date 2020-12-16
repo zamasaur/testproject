@@ -23,10 +23,11 @@ namespace TestProject.Controllers
         // GET: Authors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Authors.ToListAsync());
+            var viewModel = new ViewModel {Author = new Author { }, Authors = await _context.Authors.ToListAsync(), Compositions = await _context.Compositions.ToListAsync() };
+            return View(viewModel);
         }
 
-        // GET: Authors/Details/5
+        // GET: Authors/Details/{id}
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,9 +45,9 @@ namespace TestProject.Controllers
             var bookByAuthor = await _context.Books
                 .Where(b => b.Composition.Any(c => c.AuthorID == id)).ToListAsync();
 
-            var detailModelView = new ViewModel { Author = author, Books = bookByAuthor };
+            var modelView = new ViewModel { Author = author, Books = bookByAuthor };
 
-            return View(detailModelView);
+            return View(modelView);
         }
 
         // GET: Authors/Create
@@ -71,7 +72,7 @@ namespace TestProject.Controllers
             return View(author);
         }
 
-        // GET: Authors/Edit/5
+        // GET: Authors/Edit/{id}
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,7 +88,7 @@ namespace TestProject.Controllers
             return View(author);
         }
 
-        // POST: Authors/Edit/5
+        // POST: Authors/Edit/{id}
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -122,15 +123,21 @@ namespace TestProject.Controllers
             return View(author);
         }
 
-        // POST: Authors/Delete/5
+        // POST: Authors/Delete/{id}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
-            _context.Authors.Remove(author);
-            await _context.SaveChangesAsync();
-            return PartialView("_AuthorList", await _context.Authors.ToListAsync());
+            // avoid book without author
+            if (!_context.Compositions.Any(c => c.AuthorID == id)) {
+                var author = await _context.Authors.FindAsync(id);
+                _context.Authors.Remove(author);
+                await _context.SaveChangesAsync();
+            }
+
+            var viewModel = new ViewModel { Author = new Author { }, Authors = await _context.Authors.ToListAsync(), Compositions = await _context.Compositions.ToListAsync() };
+
+            return PartialView("_AuthorList", viewModel);
         }
 
         private bool AuthorExists(int id)
