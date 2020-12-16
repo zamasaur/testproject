@@ -20,31 +20,16 @@ namespace TestProject.Controllers
             _context = context;
         }
 
-        // GET: Books
-        public async Task<IActionResult> Index(int? id)
-        {
-            if (id == null)
-            {
-                return View(await _context.Books.ToListAsync());
-            }
-            else {
-                var bookByAuthor = await _context.Books
-                .Where(b => b.Composition.Any(c => c.AuthorID == id)).ToListAsync();
-
-                return View(bookByAuthor);
-            }
-        }
-
-        // GET: Books/Details/5
+        // GET: Books/Details/{id}?authorId={authorId}
         public async Task<IActionResult> Details(int? id, int? authorId)
         {
-            if (id == null)
+            if (id == null || authorId == null)
             {
                 return NotFound();
             }
 
             var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.BookID == id);
+                .FirstOrDefaultAsync(b => b.BookID == id);
             if (book == null)
             {
                 return NotFound();
@@ -53,27 +38,31 @@ namespace TestProject.Controllers
             var authorByBook = await _context.Authors
                 .Where(a => a.Composition.Any(c => c.BookID == id)).ToListAsync();
 
-            //var author = await _context.Authors.FindAsync(authorId);
-
-            var modelView = new ViewModel { BookID = book.BookID, Book = book, AuthorID = (int)authorId, Authors = authorByBook };
+            var modelView = new ViewModel { Book = book, AuthorID = (int)authorId, Authors = authorByBook };
 
             return View(modelView);
         }
 
-        // GET: Books/Create/5
-        public IActionResult Create(int id)
+        // GET: Books/Create/{authorId}
+        public IActionResult Create(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var author = _context.Authors
-                .FirstOrDefault(m => m.AuthorID == id);
+                .FirstOrDefault(a => a.AuthorID == id);
             if (author == null)
             {
                 return NotFound();
             }
+
             var detailModelView = new ViewModel { Author = author };
             return View(detailModelView);
         }
 
-        // POST: Books/Create/5
+        // POST: Books/Create/{authorId}
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -87,7 +76,6 @@ namespace TestProject.Controllers
                 _context.Add(new Composition { AuthorID = id, BookID = book.BookID });
                 await _context.SaveChangesAsync();
 
-                /*return RedirectToAction(nameof(Index));*/
                 return RedirectToRoute(new
                 {
                     controller = "Authors",
@@ -98,7 +86,7 @@ namespace TestProject.Controllers
             return View(book);
         }
 
-        // GET: Books/Edit/5
+        // GET: Books/Edit/{id}?authorId={authorId}
         public async Task<IActionResult> Edit(int? id, int? authorId)
         {
             if (id == null || authorId == null)
@@ -113,12 +101,11 @@ namespace TestProject.Controllers
                 return NotFound();
             }
 
-            var detailModelView = new ViewModel { Book = book , Author = author};
-            return View(detailModelView);
-            /*return View(book);*/
+            var viewModel = new ViewModel { Book = book , Author = author};
+            return View(viewModel);
         }
 
-        // POST: Books/Edit/5
+        // POST: Books/Edit/{id}?authorId={authorId}
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -148,9 +135,7 @@ namespace TestProject.Controllers
                         throw;
                     }
                 }
-                //return RedirectToAction(nameof(Index));
             }
-            //return View(book);
             return RedirectToRoute(new
             {
                 controller = "Authors",
@@ -159,100 +144,113 @@ namespace TestProject.Controllers
             });
         }
 
-        // GET: Books/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Books/Delete/{id}?authorId={authorId}
+        public async Task<IActionResult> Delete(int? id, int? authorId)
         {
-            if (id == null)
+            if (id == null || authorId == null)
             {
                 return NotFound();
             }
 
-            var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.BookID == id);
-            if (book == null)
+            var book = await _context.Books.FindAsync(id);
+            var author = await _context.Authors.FindAsync(authorId);
+            if (book == null || author == null || !_context.Compositions.Any(c => c.AuthorID == authorId && c.BookID == id))
             {
                 return NotFound();
             }
 
-            return View(book);
+            var viewModel = new ViewModel { Book = book , Author = author};
+            return View(viewModel);
         }
 
-        // POST: Books/Delete/5
+        // POST: Books/Delete/{id}?authorId={authorId}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, int authorId)
         {
             var book = await _context.Books.FindAsync(id);
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToRoute(new
+            {
+                controller = "Authors",
+                action = "Details",
+                id = authorId
+            });
         }
 
-        private bool BookExists(int id)
+        // GET: Books/AddAuthor/{id}?authorId={authorId}
+        public async Task<IActionResult> AddAuthor(int? id, int? authorId)
         {
-            return _context.Books.Any(e => e.BookID == id);
-        }
-
-        // GET: Books/AddAuthor
-        public async Task<IActionResult> AddAuthor(int? id, int authorId)
-        {
-            if (id == null)
+            if (id == null || authorId == null)
             {
                 return NotFound();
             }
 
             var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.BookID == id);
+                .FirstOrDefaultAsync(b => b.BookID == id);
             if (book == null)
             {
                 return NotFound();
             }
 
-            var authors = await _context.Authors
+            var addableAuthors = await _context.Authors
                 .Where(a => !a.Composition.Any(c => c.BookID == id)).ToListAsync();
 
             var author = await _context.Authors.FindAsync(authorId);
 
-            var detailModelView = new ViewModel { BookID = book.BookID, Book = book, Author = author, Authors = authors };
+            var viewModel = new ViewModel { Book = book, Author = author, Authors = addableAuthors };
 
-            return View(detailModelView);
+            return View(viewModel);
         }
 
-        // POST: Books/AddAuthor/{BookID}?authorId={AuthorID}
+        // POST: Books/AddAuthor/{id}?authorId={authorId}
         [HttpPost, ActionName("AddAuthor")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddAuthorConfirmed(int id, int authorId)
         {
             var book = await _context.Books.FindAsync(id);
             var author = await _context.Authors.FindAsync(authorId);
+            if (book == null || author == null|| _context.Compositions.Any(c => c.AuthorID == authorId && c.BookID == id))
+            {
+                return NotFound();
+            }
 
             var composition = _context.Compositions.Add(new Composition { AuthorID = authorId, BookID = id });
             await _context.SaveChangesAsync();
 
-            var notAuthors = await _context.Authors
+            var addableAuthors = await _context.Authors
                 .Where(a => !a.Composition.Any(c => c.BookID == id)).ToListAsync();
 
-            var modelView = new ViewModel { BookID = book.BookID, Book = book, Authors = notAuthors };
-            return PartialView("_AddAuthorList", modelView);
+            var viewModel = new ViewModel { Book = book, Authors = addableAuthors };
+            return PartialView("_AddAuthorList", viewModel);
         }
 
-        // POST: Books/AddAuthor/{BookID}?authorId={AuthorID}
+        // POST: Books/AddAuthor/{id}?authorId={authorId}
         [HttpPost, ActionName("RemoveAuthor")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveAuthorConfirmed(int id, int authorId)
         {
             var book = await _context.Books.FindAsync(id);
             var author = await _context.Authors.FindAsync(authorId);
+            if (book == null || author == null || !_context.Compositions.Any(c => c.AuthorID == authorId && c.BookID == id))
+            {
+                return NotFound();
+            }
 
             var composition = _context.Compositions.Remove(new Composition { AuthorID = authorId, BookID = id });
             await _context.SaveChangesAsync();
 
-            var notAuthors = await _context.Authors
+            var removableAuthors = await _context.Authors
                 .Where(a => a.Composition.Any(c => c.BookID == id)).ToListAsync();
 
-            var modelView = new ViewModel { BookID = book.BookID, Book = book, Authors = notAuthors };
-            return PartialView("_RemoveAuthorList", modelView);
+            var viewModel = new ViewModel { Book = book, Authors = removableAuthors };
+            return PartialView("_RemoveAuthorList", viewModel);
         }
 
+        private bool BookExists(int id)
+        {
+            return _context.Books.Any(e => e.BookID == id);
+        }
     }
 }

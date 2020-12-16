@@ -23,7 +23,11 @@ namespace TestProject.Controllers
         // GET: Authors
         public async Task<IActionResult> Index()
         {
-            var viewModel = new ViewModel {Author = new Author { }, Authors = await _context.Authors.ToListAsync(), Compositions = await _context.Compositions.ToListAsync() };
+            var allAuthors = await _context.Authors.ToListAsync();
+            var allComposition = await _context.Compositions.ToListAsync();
+
+            var viewModel = new ViewModel {Author = new Author { }, Authors = allAuthors, Compositions = allComposition };
+
             return View(viewModel);
         }
 
@@ -36,7 +40,7 @@ namespace TestProject.Controllers
             }
 
             var author = await _context.Authors
-                .FirstOrDefaultAsync(m => m.AuthorID == id);
+                .FirstOrDefaultAsync(a => a.AuthorID == id);
             if (author == null)
             {
                 return NotFound();
@@ -135,7 +139,10 @@ namespace TestProject.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            var viewModel = new ViewModel { Author = new Author { }, Authors = await _context.Authors.ToListAsync(), Compositions = await _context.Compositions.ToListAsync() };
+            var allAuthors = await _context.Authors.ToListAsync();
+            var allComposition = await _context.Compositions.ToListAsync();
+
+            var viewModel = new ViewModel { Author = new Author { }, Authors = allAuthors, Compositions = allComposition };
 
             return PartialView("_AuthorList", viewModel);
         }

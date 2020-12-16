@@ -1,4 +1,4 @@
-﻿@model TestProject.Models.Book
+﻿@model TestProject.ViewModels.ViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -11,29 +11,30 @@
     <h4>Book</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Book.Title)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Book.Title)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Isbn)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Book.Isbn)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Isbn)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Book.Isbn)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Summary)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Book.Summary)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Summary)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Book.Summary)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="BookID" />
+        <input type="hidden" asp-for="Author.AuthorID" name="authorId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-controller="Authors" asp-action="Details" asp-route-id="@Model.Author.AuthorID">Back</a>
     </form>
 </div>

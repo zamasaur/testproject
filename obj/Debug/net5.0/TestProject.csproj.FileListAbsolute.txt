@@ -335,7 +335,6 @@ D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Books\C
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Books\Delete.cshtml.g.cs
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Books\Details.cshtml.g.cs
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Books\Edit.cshtml.g.cs
-D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Books\Index.cshtml.g.cs
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 D:\WORKSPACE\personal\Lasersoft\testproject\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
