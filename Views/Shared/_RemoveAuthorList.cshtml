@@ -53,17 +53,22 @@
                     @Html.DisplayFor(modelItem => item.Nation)
                 </td>
                 <td>
-                    @if (Model.Authors.Count > 1) { 
-                    
                     <form asp-action="RemoveAuthor" asp-route-id="@Model.Book.BookID" data-ajax="true" data-ajax-update="#RemoveAuthorList" style="display: inline;">
                         <input type="hidden" asp-for="@item.AuthorID" name="authorId" />
                         <!-- Modal trigger -->
-                        <button type="button" class="btn btn-sm btn-warning d-none d-md-inline-block" data-toggle="modal" data-target="#confirmationModal">
-                            Remove
-                        </button>
+                        @if (Model.Authors.Count > 1)
+                        {
+                            <button type="button" class="btn btn-sm btn-warning d-none d-md-inline-block" data-toggle="modal" data-target="#confirmationModal">
+                                Remove
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-sm btn-warning d-none d-md-inline-block" data-toggle="modal" data-target="#confirmationModal" disabled>
+                                Remove
+                            </button>
+                        }
                     </form>
-
-                    }
                 </td>
             </tr>
         }
