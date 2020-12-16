@@ -10,7 +10,7 @@
     <partial name="_AddAuthorList" model="Model" />
 </div>
 
-<a asp-controller="Books" asp-action="Details" asp-route-id="@Model.Book.BookID">Back</a>
+<a asp-controller="Books" asp-action="Details" asp-route-id="@Model.Book.BookID" asp-route-authorId="@Model.Author.AuthorID">Back</a>
 
 <!-- Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
