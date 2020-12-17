@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "TestRestApiJson";
+}
+
+<h1>TestRestApiJson</h1>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+            var data = {
+                Surname: "Auth",
+                Name: "On"
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/api/Books",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(data),
+                success: (data) => {
+                    console.log(data);
+                }
+            });
+        });
+    </script>
+}
